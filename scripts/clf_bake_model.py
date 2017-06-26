@@ -1,7 +1,8 @@
+# encode: utf-8
 import os
 import chainer
 from chainer import optimizers
-import chainer.function as F
+import chainer.functions as F
 import chainer.links as L
 import chainer.serializers as S
 import numpy as np
@@ -11,7 +12,7 @@ class clf_bake(chainer.Chain):
 		super(clf_bake,self).__init__(
 			conv1 = F.Convolution2D(3,16,5,pad=2),
 			conv2 = F.Convolution2D(16,32,5,pad=2),
-			l3 = F.Linear(62500,250),
+			l3 = F.Linear(None,250),
 			l4 = F.Linear(250,2)
 		)
 
@@ -19,7 +20,7 @@ class clf_bake(chainer.Chain):
 		self.loss = None
 		self.accuracy = None
 
-	def forward(self,x_data,ydata,train=True):
+	def forward(self,x_data,y_data,train=True):
 		self.clear()
 		x_data = chainer.Variable(np.asarray(x_data),volatile=not train)
 		y_data = chainer.Variable(np.asarray(y_data),volatile=not train)
